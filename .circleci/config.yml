@@ -1,0 +1,27 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/python
+    working_directory: ~/works
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: init
+          command: |
+            mkdir target
+            cp ./ci-docker.sh target/ci-docker.sh
+            bash ./target/ci-docker.sh
+      # - persist_to_workspace:
+      #     root: ~/works
+      #     paths:
+      #       - target
+
+
+workflows:
+  main:
+    jobs:
+      - build
