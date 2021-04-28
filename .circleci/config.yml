@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.2
+
+workflows:
+  main:
+    jobs:
+      - build
+
+
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.8
+    working_directory: ~/works
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: init
+          command: |
+            mkdir target
+            cp ./ci-docker.sh target/ci-docker.sh
+            bash ./target/ci-docker.sh
+
+
